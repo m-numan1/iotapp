@@ -180,14 +180,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
-import 'package:iotapp/screens/monthlyattendance.dart';
 
-class AttendanceScreen extends StatefulWidget {
+class MonthlyAttendance extends StatefulWidget {
   @override
-  _AttendanceScreenState createState() => _AttendanceScreenState();
+  _MonthlyAttendanceState createState() => _MonthlyAttendanceState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen> {
+class _MonthlyAttendanceState extends State<MonthlyAttendance> {
   String url =
       'https://smart-attendance-system-d6ed0-default-rtdb.firebaseio.com/attendance';
   String stdurl =
@@ -225,66 +224,66 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     });
   }
 
-  // Future<void> fetchAttendanceData() async {
-  //   DatabaseReference attendanceRef = _database;
-  //   attendanceRef.once().then((DatabaseEvent event) {
-  //     DataSnapshot snapshot = event.snapshot;
-
-  //     setState(() {
-  //       if (snapshot.value != null) {
-  //         Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
-
-  //         attendanceData = List<Map<dynamic, dynamic>>.from(
-  //             data.values.map((value) => value as Map<dynamic, dynamic>));
-  //       }
-  //     });
-  //   }).catchError((error) {
-  //     print('Error retrieving data: $error');
-  //   });
-  // }
-
   Future<void> fetchAttendanceData() async {
-    // Get today's date in 'yyyy-MM-dd' format to match the schema
-    String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    // Reference to the attendance data in Firebase
-    DatabaseReference attendanceRef = _database; //.child('attendance');
-
-    try {
-      DatabaseEvent event = await attendanceRef.once();
+    DatabaseReference attendanceRef = _database;
+    attendanceRef.once().then((DatabaseEvent event) {
       DataSnapshot snapshot = event.snapshot;
 
-      if (snapshot.value != null) {
-        Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
+      setState(() {
+        if (snapshot.value != null) {
+          Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
 
-        print("Fetched data: $data"); // Debugging step
-
-        setState(() {
-          // Filter only attendance records where the 'date' matches today's date
-          attendanceData =
-              List<Map<dynamic, dynamic>>.from(data.values.where((attendance) {
-            print(
-                "Checking attendance date: ${attendance['date']}"); // Debugging step
-            return attendance['date'] == todayDate;
-          }).map((attendance) {
-            print(
-                "Adding attendance for student: ${attendance['student_id']}"); // Debugging step
-            return {
-              'course_id': attendance['course_id'],
-              'student_id': attendance['student_id'],
-              'status': attendance['status'],
-              'timestamp': attendance['timestamp'],
-            };
-          }));
-          print("Attendance data updated: $attendanceData"); // Debugging step
-        });
-      } else {
-        print("No data found.");
-      }
-    } catch (error) {
-      print('Error retrieving attendance data: $error');
-    }
+          attendanceData = List<Map<dynamic, dynamic>>.from(
+              data.values.map((value) => value as Map<dynamic, dynamic>));
+        }
+      });
+    }).catchError((error) {
+      print('Error retrieving data: $error');
+    });
   }
+
+  // Future<void> fetchAttendanceData() async {
+  //   // Get today's date in 'yyyy-MM-dd' format to match the schema
+  //   String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  //   // Reference to the attendance data in Firebase
+  //   DatabaseReference attendanceRef = _database; //.child('attendance');
+
+  //   try {
+  //     DatabaseEvent event = await attendanceRef.once();
+  //     DataSnapshot snapshot = event.snapshot;
+
+  //     if (snapshot.value != null) {
+  //       Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
+
+  //       print("Fetched data: $data"); // Debugging step
+
+  //       setState(() {
+  //         // Filter only attendance records where the 'date' matches today's date
+  //         attendanceData =
+  //             List<Map<dynamic, dynamic>>.from(data.values.where((attendance) {
+  //           print(
+  //               "Checking attendance date: ${attendance['date']}"); // Debugging step
+  //           return attendance['date'] == todayDate;
+  //         }).map((attendance) {
+  //           print(
+  //               "Adding attendance for student: ${attendance['student_id']}"); // Debugging step
+  //           return {
+  //             'course_id': attendance['course_id'],
+  //             'student_id': attendance['student_id'],
+  //             'status': attendance['status'],
+  //             'timestamp': attendance['timestamp'],
+  //           };
+  //         }));
+  //         print("Attendance data updated: $attendanceData"); // Debugging step
+  //       });
+  //     } else {
+  //       print("No data found.");
+  //     }
+  //   } catch (error) {
+  //     print('Error retrieving attendance data: $error');
+  //   }
+  // }
 
   List<Map<dynamic, dynamic>> getFilteredAttendance(String courseId) {
     return attendanceData.where((entry) {
@@ -333,21 +332,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   //     buildCourseButton('IoT', 'CSE003'),
                   //   ],
                   // ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 80.0, top: 20),
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStatePropertyAll(Colors.green)),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MonthlyAttendance(),
-                              ));
-                        },
-                        child: Text('Check Monthly')),
-                  ),
                   SizedBox(height: 24),
                   buildAttendanceList('CSE002', 'Networking'),
                   SizedBox(height: 16),
