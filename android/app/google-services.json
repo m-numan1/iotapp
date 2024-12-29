@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "118380008019",
+    "firebase_url": "https://smart-attendance-system-d6ed0-default-rtdb.firebaseio.com",
+    "project_id": "smart-attendance-system-d6ed0",
+    "storage_bucket": "smart-attendance-system-d6ed0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118380008019:android:eb4a6d31b3a07fc05feca6",
+        "android_client_info": {
+          "package_name": "com.example.iotapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsN-e1iwfXVO2L0LHlsM2plbdJiIvcEO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
